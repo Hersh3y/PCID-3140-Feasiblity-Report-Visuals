@@ -15,49 +15,20 @@ sns.set_theme(style="whitegrid")
 clemson_colors = ['#F56600', '#522D80'] # Orange and Regalia
 
 # ==========================================
-# Visual 1: Disparity in Student Attendance 
-# (Supports Problem & "Guaranteed Baseline Access")
-# ==========================================
-plt.figure(figsize=(9, 6))
-attendance_col = "How many Clemson Football games do you regularly attend in a single season?"
-
-# Function to extract numbers from the free-text responses
-def clean_attendance(val):
-    val = str(val).lower()
-    if 'all' in val or 'every' in val:
-        return 7 # Assuming ~7 home games in a season
-    nums = re.findall(r'\d+', val)
-    if nums:
-        return int(nums[0])
-    return None
-
-df['Cleaned_Attendance'] = df[attendance_col].apply(clean_attendance)
-
-# Drop missing/unparsable values just for the plot
-plot_data_v1 = df.dropna(subset=['Cleaned_Attendance'])
-
-sns.countplot(data=plot_data_v1, x='Cleaned_Attendance', color='#F56600')
-plt.title("Current Disparity in Student Game Attendance\n(Highlights the Need for Guaranteed Baseline Access)", fontsize=14, fontweight='bold')
-plt.xlabel("Number of Games Attended in a Season", fontsize=12)
-plt.ylabel("Number of Students", fontsize=12)
-
-plt.savefig("attendance_disparity_bar.png", bbox_inches='tight')
-print("Visual 1 saved as 'attendance_disparity_bar.png'")
-plt.close()
-
-# ==========================================
-# Visual 2: Impact of Easier Tickets on Attendance (Pie Chart)
-# (Supports Section 5.1 Call to Action)
+# Visual 1: Easier Tickets on Attendance (Pie Chart)
 # ==========================================
 plt.figure(figsize=(8, 6))
 easier_tickets_col = "If tickets were easier to get, would you attend more games?"
 
 # Count the Yes/No responses
-attendance_impact_counts = df[easier_tickets_col].astype(str).str.strip().str.lower().value_counts()
+attendance_counts = df[easier_tickets_col].astype(str).str.strip().str.lower().value_counts()
+
+# Create labels with counts
+labels = [f"{key.capitalize()} ({count})" for key, count in attendance_counts.items()]
 
 plt.pie(
-    attendance_impact_counts, 
-    labels=attendance_impact_counts.index.str.capitalize(), 
+    attendance_counts, 
+    labels=labels, 
     autopct='%1.1f%%', 
     startangle=140, 
     colors=clemson_colors,
@@ -67,13 +38,12 @@ plt.pie(
 plt.title("Would Students Attend More Games if Tickets Were Easier to Get?", fontsize=14, fontweight='bold')
 plt.axis('equal') 
 
-plt.savefig("easier_tickets_impact_pie.png", bbox_inches='tight')
-print("Visual 2 saved as 'easier_tickets_impact_pie.png'")
+plt.savefig("easier_tickets_pie.png", bbox_inches='tight')
+print("Visual 1 saved as 'easier_tickets_pie.png'")
 plt.close()
 
 # ==========================================
-# Visual 3: Sentiment on Ticket Resellers (Donut Chart)
-# (Supports "Market Regulation" Criteria)
+# Visual 2: Sentiment on Ticket Resellers (Donut Chart)
 # ==========================================
 plt.figure(figsize=(8, 8)) # Back to a square since the legend is inside
 
@@ -120,5 +90,5 @@ plt.axis('equal')
 
 plt.tight_layout() 
 plt.savefig("reseller_sentiment_donut.png", bbox_inches='tight')
-print("Visual 3 saved as 'reseller_sentiment_donut.png'")
+print("Visual 2 saved as 'reseller_sentiment_donut.png'")
 plt.close()
