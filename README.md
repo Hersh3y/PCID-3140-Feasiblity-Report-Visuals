@@ -9,7 +9,7 @@ This repository contains visualizations for the PCID-3140 Feasibility Report on 
 
 This pie chart demonstrates the impact of ticket accessibility on student attendance. The survey data shows student sentiment on whether easier ticket acquisition would increase their game attendance.
 
-![Visual 1: Easier Tickets Impact](easier_tickets_impact_pie.png)
+![Visual 1: Easier Tickets](easier_tickets_pie.png)
 
 ---
 
